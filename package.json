@@ -6,6 +6,8 @@
   "author": "Ezra Anglo <dev.ezraanglo@gmail.com>",
   "private": true,
   "scripts": {
+    "dev": "cross-env QENV=development quasar dev",
+    "deploy": "cross-env QENV=production quasar build && firebase deploy",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
@@ -14,11 +16,15 @@
     "core-js": "^3.6.5",
     "firebase": "^8.2.6",
     "quasar": "^1.0.0",
-    "vuex": "^3.6.2"
+    "vue-i18n": "^8.22.4",
+    "vuex": "^3.6.2",
+    "vuexfire": "^3.2.5"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
+    "@quasar/quasar-app-extension-qenv": "^1.0.4",
     "babel-eslint": "^10.0.1",
+    "cross-env": "^7.0.3",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-loader": "^3.0.3",
