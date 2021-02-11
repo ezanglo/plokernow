@@ -1,6 +1,6 @@
 <template>
     <q-layout view="hHh Lpr lFf">
-        <q-header elevated>
+        <q-header elevated class="bg-indigo">
         <q-toolbar>
             <q-btn flat dense round icon="menu" aria-label="Menu" @click="drawer = !drawer" />
             <q-toolbar-title>{{currentGame.gameName}}</q-toolbar-title>
@@ -15,13 +15,16 @@
                 </q-item-section>
             </q-item>
             <div class="row justify-center">
-                <q-card dark :key="index"
-                    v-for="(card, index) in currentGame.cardDeck" 
-                    class="bg-blue-5 q-ma-sm q-pa-xs col-3"
+                <q-card :key="index"
+                    v-for="(card, index) in currentGame.cardDeck"
+                    class="bg-indigo-5 q-ma-sm q-pa-xs col-3"
                     style="height:100px">
-                    <q-item 
+                    <q-item
+                        class="bg-white"
                         v-ripple
-                        clickable 
+                        clickable
+                        active
+                        active-class="text-indigo"
                         style="height:100%">
                         <q-item-section class="text-center">
                             <q-item-label class="text-bold text-h6">{{card}}</q-item-label>
@@ -39,32 +42,27 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
-    data () {
-        return {
-            drawer: false,
-            currentGame: {}
-        }
-    },
-    computed:{
-        currentGameId() {
-            return this.$route.params.id
-        }
-    },
-    mounted: async function(){
-        const gameDetails = await this.getGameDetails(this.currentGameId)
-        this.currentGame = {...gameDetails}
-    },
-    methods: {
-        ...mapActions('game', ['getGameDetails']),
+  data() {
+    return {
+      drawer: false
     }
+  },
+  computed: {
+    ...mapGetters('game', ['currentGame']),
+    currentGameId() {
+      return this.$route.params.id
+    }
+  },
+  mounted: async function () {
+    const gameDetails = await this.getGameDetails(this.currentGameId)
+    this.setCurrentGame(gameDetails)
+  },
+  methods: {
+    ...mapActions('game', ['getGameDetails']),
+    ...mapMutations('game', ['setCurrentGame'])
+  }
 }
 </script>
-
-
-<style lang="stylus">
-.active-card
-  border 1px solid black
-</style>

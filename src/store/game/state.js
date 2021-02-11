@@ -1,3 +1,6 @@
 export default {
-  currentGame: null
+  currentGame: {
+    gameName: '',
+    players: []
+  }
 }

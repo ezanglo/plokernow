@@ -29,7 +29,7 @@ export const getGamePlayer = (gameId, id) => {
 }
 
 export const insertGamePlayer = function(gameId, data) {
-    return db.addDocument('games/' + gameId + '/players', data)
+  return getGamePlayer(gameId, data.id).set(data)
 }
 
 export const updateGamePlayer = (gameId, data) => {
