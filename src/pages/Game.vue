@@ -30,8 +30,6 @@ export default {
     ...mapGetters('game', ['currentGame']),
   },
   mounted: function(){
-    console.log(this.currentGame);
-    console.log(store.state.auth.uid);
   },
   methods: {
 

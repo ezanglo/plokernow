@@ -7,7 +7,23 @@ export const getGame = (id) => {
 }
 
 export const insertGame = function(data) {
-    return db.addDocument(collectionName, data)
+  return db.addDocument(collectionName, data)
+}
+
+export const addGameListener = function(gameId, callback)
+{
+  db.firestore().collection('games/' + gameId + '/players')
+    .onSnapshot((querySnapshot) => {
+      var players = [];
+      querySnapshot.forEach((doc) => {
+        players.push(doc.data());
+      });
+
+      if(callback){
+        callback(players)
+      }
+      console.log("Current players", players.join(", "));
+    })
 }
 
 export const updateGame = (data) => {
@@ -29,7 +45,7 @@ export const getGamePlayer = (gameId, id) => {
 }
 
 export const insertGamePlayer = function(gameId, data) {
-  return getGamePlayer(gameId, data.id).set(data)
+  return getGamePlayer(gameId, data.userId).set(data)
 }
 
 export const updateGamePlayer = (gameId, data) => {

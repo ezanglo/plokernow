@@ -5,27 +5,35 @@ export const createNewGame = async function (context, payload) {
   const isAuthenticated = store.state.auth.isAuthenticated
   if (!isAuthenticated) {
     await store.dispatch('auth/loginAnonymously')
+    await createNewGame(context, payload)
   }
   const game = await gameService.insertGame(payload);
-  await addCurrentUserToGame(context, game)
+  await addCurrentUserToGame(context, game.id)
   return game.id
 }
 
-export const addCurrentUserToGame = async function ({ commit }, payload) {
+export const addCurrentUserToGame = async function (context, gameId) {
   const isAuthenticated = store.state.auth.isAuthenticated
-  console.log(store.state.auth);
   if(!isAuthenticated){
     await store.dispatch('auth/loginAnonymously')
   }
-  await gameService.insertGamePlayer(payload.id, {
+  await gameService.insertGamePlayer(gameId, {
     userId: store.state.auth.uid
   })
 }
 
 export const getGameDetails = async function(context, gameId) {
+  const isAuthenticated = store.state.auth.isAuthenticated
+  if (!isAuthenticated) {
+    await store.dispatch('auth/loginAnonymously')
+    await getGameDetails(context, gameId)
+  }
   const game = await gameService.getGame(gameId).get()
-  await addCurrentUserToGame(context, game)
-  const players = await gameService.getGamePlayers(gameId)
   let gameDetails = game.data()
-  return {...gameDetails, players: players}
+  await addCurrentUserToGame(context, gameId)
+  const players = await gameService.getGamePlayers(gameId)
+  await gameService.addGameListener(gameId, function(players){
+    context.commit('updateCurrentGamePlayers', {id: gameId, players: players});
+  });
+  return {...gameDetails, id: gameId, players: players}
 }

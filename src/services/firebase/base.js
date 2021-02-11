@@ -22,7 +22,7 @@ export const handleOnAuthStateChanged = async (store, currentUser) => {
       isReady: true,
       uid: (currentUser ? currentUser.uid : ''),
     })
-    
+
     if(store.state.auth.isAuthenticated){
         const isOnline = window.navigator.onLine
         Loading.show({
@@ -31,12 +31,12 @@ export const handleOnAuthStateChanged = async (store, currentUser) => {
             spinner: isOnline ? QSpinnerGears : QSpinnerRadio,
             customClass: 'loader'
         })
-    
+
         await store.dispatch('user/getCurrentUser', currentUser.uid)
     }
-    
+
     Loading.hide()
-    
+
 }
 
 export const isAuthenticated = (store) => {

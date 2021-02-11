@@ -15,7 +15,7 @@
           Select a name and a card deck for your game.
         </q-item-section>
       </q-item>
-      <q-input 
+      <q-input
         v-model="gameName"
         label="Game Name"
         outlined
@@ -25,7 +25,7 @@
         name="gameName"
         type="text"
         />
-        <q-select 
+        <q-select
           outlined
           color="indigo"
           for="cardDeck"
@@ -84,10 +84,10 @@ export default {
       const { gameName, cardDeck } = this
       try {
         const gameId = await this.createNewGame({
-          gameName, 
+          gameName,
           cardDeck: cardDeck.value
         })
-        
+
         this.$router.push({
           path: '/game/' + gameId
         })
