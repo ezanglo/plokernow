@@ -4,13 +4,19 @@ const routes = [
     path: '/',
     component: () => import('layouts/DefaultLayout.vue'),
     children: [
-      { 
-        path: '', 
-        component: () => import('pages/Index.vue') 
-      },
       {
-        path: 'create-game',
+        path: '',
         component: () => import('pages/CreateGame.vue') 
+      }
+    ]
+  },
+  {
+    path: '/game',
+    component: () => import('layouts/GameLayout.vue'),
+    children: [
+      {
+        path: ':id',
+        component: () => import('pages/Game.vue') 
       }
     ]
   },

@@ -31,9 +31,9 @@ export const handleOnAuthStateChanged = async (store, currentUser) => {
             spinner: isOnline ? QSpinnerGears : QSpinnerRadio,
             customClass: 'loader'
         })
-    }
     
-    await store.dispatch('user/getCurrentUser', currentUser.uid)
+        await store.dispatch('user/getCurrentUser', currentUser.uid)
+    }
     
     Loading.hide()
     

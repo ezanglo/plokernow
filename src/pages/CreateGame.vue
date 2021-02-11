@@ -48,6 +48,9 @@
 </template>
 
 <script>
+
+import { mapGetters, mapActions, mapMutations } from 'vuex'
+
 export default {
   name: 'CreateGame',
   data() {
@@ -61,12 +64,12 @@ export default {
       get() {
         return [
         {
-          value: 'fibo',
-          label: 'Fibonacci (0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ? )'
+          label: 'Fibonacci (0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ? )',
+          value: ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89','?'],
         },
         {
-          value: 'modified',
-          label: 'Modified Fibonacci ( 0, ½, 1, 2, 3, 5, 8, 13, 20, 40, 100, ? )'
+          label: 'Modified Fibonacci ( 0, ½, 1, 2, 3, 5, 8, 13, 20, 40, 100, ? )',
+          value: ['0', '½', '1', '2', '3', '5', '8', '13', '20', '40', '100','?'],
         }
       ]
       }
@@ -76,16 +79,26 @@ export default {
     this.cardDeck = this.cardDecks[1]
   },
   methods: {
-    onSubmit() {
-      this.$fb.loginAnonymously()
-      .then(result =>{
-        console.log(result);
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
-      });
+    ...mapActions('game', ['createNewGame']),
+    async onSubmit() {
+      const { gameName, cardDeck } = this
+      try {
+        const gameId = await this.createNewGame({
+          gameName, 
+          cardDeck: cardDeck.value
+        })
+        
+        this.$router.push({
+          path: '/game/' + gameId
+        })
+      } catch (err) {
+        this.$q.notify({
+          message: `Looks like a problem creating a game: ${err}`,
+          color: 'negative'
+        })
+      } finally {
+        this.$q.loading.hide()
+      }
     }
   }
 }
