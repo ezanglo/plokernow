@@ -77,3 +77,14 @@ export const clearCollection = (collectionName) => {
     batch.commit()
   })
 }
+
+export const updateCollection = (collectionName, payload) => {
+  const batch = firestore().batch()
+  return firestore().collection(collectionName).get()
+  .then(collection => {
+    collection.docs.map(doc => {
+      batch.update(doc.ref, payload)
+    })
+    batch.commit()
+  })
+}

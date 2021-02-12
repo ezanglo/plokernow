@@ -7,6 +7,7 @@ export const createNewGame = async function (context, payload) {
     await store.dispatch('auth/loginAnonymously')
     await createNewGame(context, payload)
   }
+  payload.createdBy = store.state.auth.uid
   const game = await gameService.insertGame(payload);
   await addCurrentUserToGame(context, game.id)
   return game.id
@@ -30,10 +31,39 @@ export const getGameDetails = async function(context, gameId) {
   }
   const game = await gameService.getGame(gameId).get()
   let gameDetails = game.data()
-  await addCurrentUserToGame(context, gameId)
   const players = await gameService.getGamePlayers(gameId)
-  await gameService.addGameListener(gameId, function(players){
+  const player = players.find(p => p.userId == store.state.auth.uid)
+  if(!player){
+    await addCurrentUserToGame(context, gameId)
+  }
+  await gameService.addGamePlayersListener(gameId, function(players){
     context.commit('updateCurrentGamePlayers', {id: gameId, players: players});
   });
+
+  await gameService.addGameListener(gameId, function(game){
+    context.commit('updateCurrentGame', game);
+  })
   return {...gameDetails, id: gameId, players: players}
+}
+
+export const updatePlayerName = async  function(context, payload) {
+  await gameService.updateGamePlayer(payload.gameId, {
+    id: payload.playerId,
+    playerName: payload.playerName
+  })
+}
+
+export const updatePlayerVote = async  function(context, payload) {
+  await gameService.updateGamePlayer(payload.gameId, {
+    id: payload.playerId,
+    playerVote: payload.playerVote
+  })
+}
+
+export const updateGameVotesVisibility = async  function(context, payload) {
+  await gameService.updateGame(payload)
+}
+
+export const resetGame = async  function(context, gameId) {
+  await gameService.resetGame(gameId)
 }

@@ -10,7 +10,7 @@ export const insertGame = function(data) {
   return db.addDocument(collectionName, data)
 }
 
-export const addGameListener = function(gameId, callback)
+export const addGamePlayersListener = function(gameId, callback)
 {
   db.firestore().collection('games/' + gameId + '/players')
     .onSnapshot((querySnapshot) => {
@@ -19,11 +19,29 @@ export const addGameListener = function(gameId, callback)
         players.push(doc.data());
       });
 
-      if(callback){
+      if (callback) {
         callback(players)
       }
-      console.log("Current players", players.join(", "));
     })
+}
+
+export const addGameListener = function(gameId, callback)
+{
+  db.getDocument(collectionName, gameId)
+    .onSnapshot((doc) => {
+      callback(doc.data())
+    });
+}
+
+export const resetGame = (gameId) => {
+  updateGame({
+    id: gameId,
+    showVotes: false
+  })
+
+  db.updateCollection('games/' + gameId + '/players', {
+    playerVote: ''
+  })
 }
 
 export const updateGame = (data) => {

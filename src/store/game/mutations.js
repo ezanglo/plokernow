@@ -16,3 +16,12 @@ export const updateCurrentGamePlayers = (state, payload) => {
     }
   }
 }
+
+export const updateCurrentGame = (state, payload) => {
+  if(payload.id === state.currentGame.id){
+    setCurrentGame(state, {
+      ...state.currentGame,
+      ...payload
+    })
+  }
+}
