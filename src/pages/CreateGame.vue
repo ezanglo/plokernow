@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-form class="create-game q-gutter-y-md" @submit="onSubmit">
+    <q-form class="create-game q-gutter-y-md" @submit="onSubmit" style="margin-top:150px">
       <q-item active active-class="text-indigo">
         <q-item-section avatar>
           <q-icon size="150px" name="style"/>

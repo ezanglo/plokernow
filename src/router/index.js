@@ -26,5 +26,16 @@ export default function (/* { store, ssrContext } */) {
     base: process.env.VUE_ROUTER_BASE
   })
 
+  // Router.beforeEach(async (to, from, next) => {
+  //   if(to.name === 'GameRoom'){
+  //     if(!to.params.id){
+  //       next('/')
+  //     }
+  //   } else {
+  //     console.log();
+  //     next()
+  //   }
+  // })
+
   return Router
 }

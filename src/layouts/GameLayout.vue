@@ -5,7 +5,7 @@
             <q-btn flat dense round icon="menu" aria-label="Menu" @click="drawer = !drawer" />
             <q-toolbar-title>{{currentGame.gameName}}</q-toolbar-title>
             <span>{{currentPlayerName}}</span>
-            <q-btn flat dense icon="edit" @click="updateCurrentPlayerName"/>
+            <q-btn flat dense round icon="edit" @click="updateCurrentPlayerName"/>
         </q-toolbar>
         </q-header>
 
@@ -134,7 +134,10 @@ export default {
     async updateCurrentPlayerName(){
       this.$q.dialog({
         title: 'Update Player Name',
+        message: 'What is your name? (Minimum 3 characters)',
         prompt: {
+          model: '',
+          isValid: val => val && val.length > 2, // << here is the magic
           type: 'text' // optional
         },
         cancel: true,

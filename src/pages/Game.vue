@@ -16,7 +16,7 @@
           </q-card>
         </q-item>
         <q-item>
-          <q-item-label>{{ (player.playerName) ? player.playerName: player.userId}}</q-item-label>
+          <q-item-label>{{ (player.playerName) ? player.playerName: 'Player'}}</q-item-label>
         </q-item>
       </div>
     </div>
