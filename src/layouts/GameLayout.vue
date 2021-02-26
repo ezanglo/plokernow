@@ -83,7 +83,8 @@ export default {
     return {
       drawer: false,
       playerName: '',
-      updatePlayerNameDialog: false
+      updatePlayerNameDialog: false,
+      currentPlayerVote: null
     }
   },
   computed: {
@@ -121,7 +122,7 @@ export default {
         }
       })
       let average = total_votes / (this.currentGame.players.length - invalid_votes);
-      return isNaN(average) ? 0 : average
+      return isNaN(average) ? 0 : Math.round(average * 100) /100
     }
   },
   mounted: async function () {
@@ -167,11 +168,17 @@ export default {
         if(this.currentGame.showVotes){
           return
         }
+
+        if(this.currentPlayerVote == vote){
+          vote = null
+        }
+
         await this.updatePlayerVote({
           gameId: this.currentGameId,
           playerId: this.currentUser.id,
           playerVote: vote
         })
+        this.currentPlayerVote = vote
       }
       catch (err){
         this.$q.notify({

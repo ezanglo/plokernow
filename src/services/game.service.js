@@ -70,6 +70,6 @@ export const updateGamePlayer = (gameId, data) => {
     return db.updateDocument('games/' + gameId + '/players', data)
 }
 
-export const deleteGamePlayers = (gameId, id) => {
+export const deleteGamePlayer = (gameId, id) => {
     return db.deleteDocument('games/' + gameId + '/players', id)
 }
