@@ -2,21 +2,50 @@
   <q-page padding class="bg-grey-3">
     <div class="row justify-center">
       <div class="items-center column" v-for="(player, index) in currentGame.players" :key="index" >
-        <q-item style="height:200px; width: 150px" class="q-ma-sm q-pa-xs">
-          <q-card style="width: 100%">
-            <q-item dark v-ripple
-                    clickable style="height:100%;"
-                    :class="cardColor(player)">
-              <q-item-section class="text-center">
-                <q-item-label v-if="currentGame.showVotes || player.userId === currentUser.id" class="text-bold text-h3">
-                  {{ (player.playerVote) ? player.playerVote: '?'}}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-card>
+        <q-item>
+          <q-carousel
+            :value="(currentGame.showVotes && currentUser.id !== player.userId) ? 'votes': 'reset'"
+            transition-prev="flip-left"
+            transition-next="flip-right"
+            animated
+            class="bg-grey-3"
+            height="230px"
+          >
+            <q-carousel-slide name="reset" style="height: 100%">
+              <q-item style="height:200px; width: 150px" class="q-ma-sm q-pa-xs">
+                <q-card style="width: 100%">
+                  <q-item dark v-ripple
+                          clickable style="height:100%;"
+                          :class="cardColor(player)">
+                    <q-item-section class="text-center">
+                      <q-item-label v-if="player.userId === currentUser.id" class="text-bold text-h3">
+                        {{ (player.playerVote) ? player.playerVote: '?'}}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-card>
+              </q-item>
+            </q-carousel-slide>
+
+            <q-carousel-slide name="votes">
+              <q-item style="height:200px; width: 150px" class="q-ma-sm q-pa-xs">
+                <q-card style="width: 100%">
+                  <q-item dark v-ripple
+                          clickable style="height:100%;"
+                          :class="cardColor(player)">
+                    <q-item-section class="text-center">
+                      <q-item-label v-if="currentGame.showVotes || player.userId === currentUser.id" class="text-bold text-h3">
+                        {{ (player.playerVote) ? player.playerVote: '?'}}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-card>
+              </q-item>
+            </q-carousel-slide>
+          </q-carousel>
         </q-item>
         <q-item>
-          <q-chip :icon="(isGameCreator && player.id != currentUser.id)?'sports_handball':'face_retouching_natural'" @remove="removePlayer(player)" color="primary" text-color="white">
+          <q-chip :icon="(currentGame.createdBy === player.userId)?'face_retouching_natural':'sports_handball'" @remove="removePlayer(player)" color="primary" text-color="white">
             {{ (player.playerName) ? player.playerName: 'Player'}}
           </q-chip>
         </q-item>
