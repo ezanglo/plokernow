@@ -8,7 +8,7 @@
             transition-prev="flip-left"
             transition-next="flip-right"
             animated
-            class="bg-grey-3"
+            class="bg-grey-3 player-card"
             height="230px"
           >
             <q-carousel-slide name="reset" style="height: 100%">
@@ -95,3 +95,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.player-card .q-panel{
+  overflow: hidden;
+}
+
+</style>
