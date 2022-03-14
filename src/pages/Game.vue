@@ -45,7 +45,8 @@
           </q-carousel>
         </q-item>
         <q-item>
-          <q-chip :icon="(currentGame.createdBy === player.userId)?'face_retouching_natural':'sports_handball'" @remove="removePlayer(player)" color="primary" text-color="white">
+          <q-chip icon="sports_handball" @remove="removePlayer(player)" color="primary" text-color="white"
+            :removable="(!!isGameCreator) && (currentGame.createdBy != player.userId)">
             {{ (player.playerName) ? player.playerName: 'Player'}}
           </q-chip>
         </q-item>
@@ -89,7 +90,7 @@ export default {
     async removePlayer(player) {
       await this.deleteGamePlayer({
         gameId: this.currentGame.id,
-        playerId: player.id
+        playerId: player.userId
       })
     }
   }

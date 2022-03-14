@@ -54,9 +54,7 @@ export const updatePlayerName = async  function(context, payload) {
 }
 
 export const deleteGamePlayer = async  function(context, payload) {
-  await gameService.deleteGamePlayer(payload.gameId, {
-    id: payload.playerId
-  })
+  await gameService.deleteGamePlayer(payload.gameId, payload.playerId)
 }
 
 export const updatePlayerVote = async  function(context, payload) {
